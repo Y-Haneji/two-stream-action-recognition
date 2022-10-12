@@ -34,7 +34,7 @@ parser.add_argument('--start-epoch', default=0, type=int, metavar='N', help='man
 def main():
     global arg
     arg = parser.parse_args()
-    print arg
+    print (arg)
 
     #Prepare DataLoader
     data_loader = dataloader.Motion_DataLoader(
@@ -151,7 +151,7 @@ class Motion_CNN():
             # measure data loading time
             data_time.update(time.time() - end)
             
-            label = label.cuda(async=True)
+            label = label.cuda(non_blocking=True)
             input_var = Variable(data).cuda()
             target_var = Variable(label).cuda()
 
@@ -199,9 +199,9 @@ class Motion_CNN():
         for i, (keys,data,label) in enumerate(progress):
             
             #data = data.sub_(127.353346189).div_(14.971742063)
-            label = label.cuda(async=True)
-            data_var = Variable(data, volatile=True).cuda(async=True)
-            label_var = Variable(label, volatile=True).cuda(async=True)
+            label = label.cuda(non_blocking=True)
+            data_var = Variable(data, volatile=True).cuda(non_blocking=True)
+            label_var = Variable(label, volatile=True).cuda(non_blocking=True)
 
             # compute output
             output = self.model(data_var)
